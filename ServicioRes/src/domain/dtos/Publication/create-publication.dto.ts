@@ -7,7 +7,7 @@ export class CreatePublicationDto {
     public readonly userId?: number,
     public readonly description?: string,
     public readonly image?: Buffer,
-  ) {}
+  ) { }
 
   static create(props: { [key: string]: any }): [string?, CreatePublicationDto?] {
     const { name, date, status, customerId, userId, description, image } = props;
@@ -16,11 +16,12 @@ export class CreatePublicationDto {
       return ['name property is required', undefined];
     }
 
-    if(!customerId && !userId){
+    if (!customerId && !userId) {
       return ['customerId or userId property is required', undefined];
     }
 
-    if (date == null || !(date instanceof Date)) {
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate.getTime())) {
       return ['date property must be a valid Date', undefined];
     }
 
